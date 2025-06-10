@@ -1,0 +1,61 @@
+---
+description: 每次通过agent模式进行调用，都要看下这个rule
+globs: 
+alwaysApply: false
+---
+# Project Rules for Gemini Fullstack LangGraph Quickstart  
+  
+## 项目概述  
+这是一个基于 Google Gemini 和 LangGraph 的全栈研究型 AI 应用，包含 React 前端和 LangGraph 后端智能体。  
+  
+## 架构规范  
+  
+### 前端架构 (Frontend)  
+- **技术栈**: React + Vite + TypeScript + Tailwind CSS + Shadcn UI  
+- **目录结构**: `frontend/src/` 包含所有前端代码  
+- **组件规范**:   
+  - 使用函数式组件和 React Hooks  
+  - 组件文件使用 PascalCase 命名 (如 `InputForm.tsx`)  
+  - 样式使用 Tailwind CSS 类名，避免内联样式  
+  
+### 后端架构 (Backend)  
+- **技术栈**: LangGraph + FastAPI + Python 3.8+  
+- **核心模块**: `backend/src/agent/` 包含智能体逻辑  
+- **关键文件**:  
+  - `graph.py`: LangGraph 状态机定义  
+  - `configuration.py`: Pydantic 配置管理  
+  - `state.py`: TypedDict 状态定义  
+  
+## 代码规范  
+  
+### Python 代码规范  
+1. **类型注解**: 所有函数必须包含类型注解  
+2. **文档字符串**: 使用 Google 风格的 docstring  
+3. **配置管理**: 使用 Pydantic BaseModel 进行配置验证  
+4. **状态管理**: 使用 TypedDict 和 LangGraph annotations  
+  
+### TypeScript 代码规范  
+1. **严格类型**: 启用 TypeScript strict mode  
+2. **接口定义**: 为所有数据结构定义接口  
+3. **组件 Props**: 使用接口定义组件属性类型  
+4. **异步处理**: 使用 async/await 处理异步操作  
+  
+## LangGraph 特定规范  
+  
+### 节点函数规范  
+- 每个节点函数必须有明确的输入输出类型  
+- 使用 `RunnableConfig` 进行配置传递  
+- 节点函数命名使用动词形式 (如 `generate_query`, `web_research`)  
+  
+### 状态管理规范  
+- 使用 `Annotated` 类型进行状态累积  
+- 状态类继承自 `TypedDict`  
+- 使用 `operator.add` 进行列表状态累积  
+  
+### 图构建规范  
+```python  
+# 标准图构建模式  [header-2](#header-2)
+builder = StateGraph(OverallState, config_schema=Configuration)  
+builder.add_node("node_name", node_function)  
+builder.add_edge(START, "first_node")  
+builder.add_conditional_edges("node", condition_func, ["next_nodes"])

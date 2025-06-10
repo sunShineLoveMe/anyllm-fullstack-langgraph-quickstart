@@ -1,0 +1,45 @@
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.CFUserTextEncoding
+.fseventsd/
+Desktop.ini # If working with Windows users
+ehthumbs.db # If working with Windows users
+Thumbs.db   # If working with Windows users
+
+# IDE / Editor specific
+.vscode/
+.idea/      # For JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+
+# Build artifacts (add your project specific ones)
+# build/
+# dist/
+# target/
+
+# Dependency directories (examples)
+# node_modules/
+# vendor/      # For PHP Composer
+# venv/        # For Python virtual environments
+# __pycache__/
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Sensitive information (NEVER commit these)
+backend/.env
+# *.pem
+# *.key
+# credentials.json
