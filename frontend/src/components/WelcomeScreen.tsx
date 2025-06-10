@@ -33,7 +33,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       />
     </div>
     <p className="text-xs text-neutral-500">
-      Powered by LM Studio (Qwen) and LangChain LangGraph.
+      Powered by DeepSeek and LangChain LangGraph.
     </p>
   </div>
 );
