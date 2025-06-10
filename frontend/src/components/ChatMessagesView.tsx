@@ -252,7 +252,7 @@ export function ChatMessagesView({
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full overflow-hidden relative">
       <ScrollArea className="flex-grow h-full overflow-hidden" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-2 max-w-4xl mx-auto pt-16 pb-20">
           {messages.map((message, index) => {
@@ -310,12 +310,26 @@ export function ChatMessagesView({
             )}
         </div>
       </ScrollArea>
-      <InputForm
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-        onCancel={onCancel}
-        hasHistory={messages.length > 0}
-      />
+      <div className="border-t border-neutral-700 bg-neutral-800">
+        <InputForm
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+          onCancel={onCancel}
+          hasHistory={messages.length > 0}
+        />
+        <div className="text-xs text-neutral-500 flex justify-between px-4 pb-2">
+          <p>Powered by DeepSeek and LangChain LangGraph.</p>
+          <a 
+            href="http://zhiyunllm.tech/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-neutral-400 transition-colors text-right"
+          >
+            栉云科技提供技术支持<br />
+            <span className="text-[10px]">Technical Support by ZhiYun Tech</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
