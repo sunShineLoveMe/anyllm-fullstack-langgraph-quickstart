@@ -23,6 +23,7 @@ export default defineConfig({
       clientPort: 5173,
       path: '/app/'
     },
+    allowedHosts: ['zhiyunllm.tech'],
     proxy: {
       "/api": {
         target: "http://127.0.0.1:2024",
