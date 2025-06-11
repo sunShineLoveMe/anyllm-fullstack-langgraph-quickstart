@@ -16,9 +16,12 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
+    origin: `http://47.113.196.109:5173`,
     hmr: {
       protocol: 'ws',
       host: '47.113.196.109', // <--- 阿里云公网IP
+      clientPort: 5173,
+      path: '/app/'
     },
     proxy: {
       "/api": {
