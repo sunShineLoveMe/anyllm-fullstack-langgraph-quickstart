@@ -136,23 +136,23 @@ def search_with_google(query: str, subscription_key: str, cx: str):
         import urllib.parse
         safe_query = urllib.parse.quote_plus(query)
         
-    params = {
-        "key": subscription_key,
-        "cx": cx,
+        params = {
+            "key": subscription_key,
+            "cx": cx,
             "q": query,  # Google API 会自动处理编码，所以使用原始查询
-        "num": REFERENCE_COUNT,
+            "num": REFERENCE_COUNT,
             "safe": "active",  # 安全搜索
             "gl": "cn",        # 地理位置（可选）
             "hl": "zh-CN",     # 语言（可选，支持中文结果）
-    }
+        }
         
         print(f"Search params: {params}")
         
-    response = requests.get(
-        GOOGLE_SEARCH_ENDPOINT, params=params, timeout=DEFAULT_SEARCH_ENGINE_TIMEOUT
-    )
+        response = requests.get(
+            GOOGLE_SEARCH_ENDPOINT, params=params, timeout=DEFAULT_SEARCH_ENGINE_TIMEOUT
+        )
         
-    if not response.ok:
+        if not response.ok:
             print(f"Google Search API Error: {response.status_code} {response.text}")
             # 尝试解析错误信息，提供更详细的错误报告
             try:
@@ -164,7 +164,7 @@ def search_with_google(query: str, subscription_key: str, cx: str):
                 pass
             return []
             
-    json_content = response.json()
+        json_content = response.json()
         # 打印 API 响应头部和少量数据，帮助调试
         print(f"API Response Keys: {list(json_content.keys())}")
         
@@ -290,12 +290,12 @@ def web_research(state: WebSearchState, config: RunnableConfig) -> OverallState:
             results = simulate_search_results(query)
     
     if results:
-    for res in results:
-        title = res.get("title", "")
-        href = res.get("link", "")
-        body = res.get("snippet", "")
-        formatted_lines.append(f"{title}: {body} ({href})")
-        sources_gathered.append({"label": title, "short_url": href, "value": href})
+        for res in results:
+            title = res.get("title", "")
+            href = res.get("link", "")
+            body = res.get("snippet", "")
+            formatted_lines.append(f"{title}: {body} ({href})")
+            sources_gathered.append({"label": title, "short_url": href, "value": href})
     elif not formatted_lines:
         # 只有当没有错误信息且结果为空时才添加这个
         formatted_lines.append("No search results found. Please try a different query.")
