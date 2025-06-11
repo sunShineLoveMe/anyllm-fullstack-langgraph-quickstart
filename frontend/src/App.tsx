@@ -21,7 +21,7 @@ export default function App() {
     max_research_loops: number;
     reasoning_model: string;
   }>({
-    apiUrl: "/api",
+    apiUrl: `${window.location.origin}/api`,
     assistantId: "agent",
     messagesKey: "messages",
     onFinish: (event: any) => {
