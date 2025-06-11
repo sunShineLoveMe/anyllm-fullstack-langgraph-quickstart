@@ -49,32 +49,33 @@ export const InputForm: React.FC<InputFormProps> = ({
   return (
     <form
       onSubmit={handleInternalSubmit}
-      className={`flex flex-col gap-2 p-3 `}
+      className={`flex flex-col gap-2 p-2 w-full`}
     >
       <div
-        className={`flex flex-row items-center justify-between text-white rounded-3xl rounded-bl-sm ${
+        className={`flex flex-row items-center justify-between text-white rounded-3xl ${
           hasHistory ? "rounded-br-sm" : ""
-        } break-words min-h-7 bg-neutral-700 px-4 pt-3 `}
+        } break-words min-h-7 bg-neutral-700 px-2 sm:px-3 pt-1 sm:pt-2 w-full`}
       >
         <Textarea
           value={internalInputValue}
           onChange={(e) => setInternalInputValue(e.target.value)}
           onKeyDown={handleInternalKeyDown}
-          placeholder="今天有什么可以帮助你的吗?"
+          placeholder="输入您的问题..."
+          style={{ fontSize: '13px' }}
           className={`w-full text-neutral-100 placeholder-neutral-500 resize-none border-0 focus:outline-none focus:ring-0 outline-none focus-visible:ring-0 shadow-none 
-                        md:text-base  min-h-[56px] max-h-[200px]`}
+                        text-sm md:text-base min-h-[40px] sm:min-h-[56px] max-h-[200px]`}
           rows={1}
         />
-        <div className="-mt-3">
+        <div className="-mt-2 sm:-mt-3">
           {isLoading ? (
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="text-red-500 hover:text-red-400 hover:bg-red-500/10 p-2 cursor-pointer rounded-full transition-all duration-200"
+              className="text-red-500 hover:text-red-400 hover:bg-red-500/10 p-1 sm:p-2 cursor-pointer rounded-full transition-all duration-200"
               onClick={onCancel}
             >
-              <StopCircle className="h-5 w-5" />
+              <StopCircle className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           ) : (
             <Button
@@ -84,24 +85,24 @@ export const InputForm: React.FC<InputFormProps> = ({
                 isSubmitDisabled
                   ? "text-neutral-500"
                   : "text-blue-500 hover:text-blue-400 hover:bg-blue-500/10"
-              } p-2 cursor-pointer rounded-full transition-all duration-200 text-base`}
+              } p-1 sm:p-2 cursor-pointer rounded-full transition-all duration-200 text-sm sm:text-base`}
               disabled={isSubmitDisabled}
             >
               Search
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4 sm:h-5 sm:w-5 ml-1" />
             </Button>
           )}
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-row gap-2 bg-neutral-700 border-neutral-600 text-neutral-300 focus:ring-neutral-500 rounded-xl rounded-t-sm pl-2  max-w-[100%] sm:max-w-[90%]">
-            <div className="flex flex-row items-center text-sm">
-              <Brain className="h-4 w-4 mr-2" />
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-row justify-center gap-2">
+          <div className="flex flex-row gap-1 bg-neutral-700 border-neutral-600 text-neutral-300 focus:ring-neutral-500 rounded-xl pl-2">
+            <div className="flex flex-row items-center text-xs sm:text-sm">
+              <Brain className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Effort
             </div>
             <Select value={effort} onValueChange={setEffort}>
-              <SelectTrigger className="w-[120px] bg-transparent border-none cursor-pointer">
+              <SelectTrigger className="w-[80px] sm:w-[120px] md:w-[150px] bg-transparent border-none cursor-pointer text-xs sm:text-sm">
                 <SelectValue placeholder="Effort" />
               </SelectTrigger>
               <SelectContent className="bg-neutral-700 border-neutral-600 text-neutral-300 cursor-pointer">
@@ -126,13 +127,13 @@ export const InputForm: React.FC<InputFormProps> = ({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-row gap-2 bg-neutral-700 border-neutral-600 text-neutral-300 focus:ring-neutral-500 rounded-xl rounded-t-sm pl-2  max-w-[100%] sm:max-w-[90%]">
-            <div className="flex flex-row items-center text-sm ml-2">
-              <Cpu className="h-4 w-4 mr-2" />
+          <div className="flex flex-row gap-1 bg-neutral-700 border-neutral-600 text-neutral-300 focus:ring-neutral-500 rounded-xl pl-2">
+            <div className="flex flex-row items-center text-xs sm:text-sm ml-1 sm:ml-2">
+              <Cpu className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Model
             </div>
             <Select value={model} onValueChange={setModel}>
-              <SelectTrigger className="w-[150px] bg-transparent border-none cursor-pointer">
+              <SelectTrigger className="w-[100px] sm:w-[150px] md:w-[180px] bg-transparent border-none cursor-pointer text-xs sm:text-sm">
                 <SelectValue placeholder="Model" />
               </SelectTrigger>
               <SelectContent className="bg-neutral-700 border-neutral-600 text-neutral-300 cursor-pointer">
@@ -149,14 +150,16 @@ export const InputForm: React.FC<InputFormProps> = ({
           </div>
         </div>
         {hasHistory && (
-          <Button
-            className="bg-neutral-700 border-neutral-600 text-neutral-300 cursor-pointer rounded-xl rounded-t-sm pl-2 "
-            variant="default"
-            onClick={() => window.location.reload()}
-          >
-            <SquarePen size={16} />
-            New Search
-          </Button>
+          <div className="flex justify-center mt-2 w-full">
+            <Button
+              className="bg-neutral-700 border-neutral-600 text-neutral-300 cursor-pointer rounded-xl pl-2 text-xs sm:text-sm"
+              variant="default"
+              onClick={() => window.location.reload()}
+            >
+              <SquarePen size={14} className="mr-1 sm:mr-2" />
+              New Search
+            </Button>
+          </div>
         )}
       </div>
     </form>

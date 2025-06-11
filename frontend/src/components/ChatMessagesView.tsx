@@ -147,7 +147,7 @@ const HumanMessageBubble: React.FC<HumanMessageBubbleProps> = ({
 }) => {
   return (
     <div
-      className={`text-white rounded-3xl break-words min-h-7 bg-neutral-700 max-w-[100%] sm:max-w-[90%] px-4 pt-3 rounded-br-lg`}
+      className={`text-white rounded-3xl break-words min-h-7 bg-neutral-700 max-w-[95%] sm:max-w-[90%] px-3 sm:px-4 pt-3 rounded-br-lg text-sm sm:text-base`}
     >
       <ReactMarkdown components={mdComponents}>
         {typeof message.content === "string"
@@ -252,15 +252,15 @@ export function ChatMessagesView({
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden relative">
-      <ScrollArea className="flex-grow h-full overflow-hidden" ref={scrollAreaRef}>
-        <div className="p-4 md:p-6 space-y-2 max-w-4xl mx-auto pt-16 pb-20">
+    <div className="flex flex-col h-full overflow-hidden relative w-full">
+      <ScrollArea className="flex-grow h-full overflow-hidden w-full" ref={scrollAreaRef}>
+        <div className="p-2 md:p-6 space-y-2 w-full mx-auto pt-16 pb-20">
           {messages.map((message, index) => {
             const isLast = index === messages.length - 1;
             return (
-              <div key={message.id || `msg-${index}`} className="space-y-3">
+              <div key={message.id || `msg-${index}`} className="space-y-3 w-full">
                 <div
-                  className={`flex items-start gap-3 ${
+                  className={`flex items-start gap-2 w-full ${
                     message.type === "human" ? "justify-end" : ""
                   }`}
                 >
@@ -310,23 +310,27 @@ export function ChatMessagesView({
             )}
         </div>
       </ScrollArea>
-      <div className="border-t border-neutral-700 bg-neutral-800">
-        <InputForm
-          onSubmit={onSubmit}
-          isLoading={isLoading}
-          onCancel={onCancel}
-          hasHistory={messages.length > 0}
-        />
-        <div className="text-xs text-neutral-500 flex justify-between px-4 pb-2">
-          <p>Powered by DeepSeek and LangChain LangGraph.</p>
+      <div className="border-t border-neutral-700 bg-neutral-800 w-full">
+        <div className="flex justify-center">
+          <div className="w-full max-w-3xl">
+            <InputForm
+              onSubmit={onSubmit}
+              isLoading={isLoading}
+              onCancel={onCancel}
+              hasHistory={messages.length > 0}
+            />
+          </div>
+        </div>
+        <div className="text-xs text-neutral-500 flex flex-wrap justify-between px-2 pb-2 gap-2">
+          <p className="text-[10px] sm:text-xs">Powered by DeepSeek and LangChain LangGraph.</p>
           <a 
             href="http://zhiyunllm.tech/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:text-neutral-400 transition-colors text-right"
+            className="hover:text-neutral-400 transition-colors text-right text-[10px] sm:text-xs"
           >
             栉云科技提供技术支持<br />
-            <span className="text-[10px]">Technical Support by ZhiYun Tech</span>
+            <span className="text-[8px] sm:text-[10px]">Technical Support by ZhiYun Tech</span>
           </a>
         </div>
       </div>
