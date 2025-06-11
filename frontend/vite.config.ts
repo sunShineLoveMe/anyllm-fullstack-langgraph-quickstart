@@ -6,22 +6,26 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/app/",
   resolve: {
     alias: {
-      // "@": path.resolve(new URL(".", import.meta.url).pathname, "./src"),
       "@": path.resolve(__dirname, "src"),
     },
   },
+  base: "/app/",
   server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
     proxy: {
-      // Proxy API requests to the backend server
       "/api": {
-        target: "http://127.0.0.1:8000", // Default backend address
+        target: process.env.VITE_API_URL || "http://localhost:8123",
         changeOrigin: true,
-        // Optionally rewrite path if needed (e.g., remove /api prefix if backend doesn't expect it)
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
   },
 });

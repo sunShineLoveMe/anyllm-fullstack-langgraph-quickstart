@@ -53,6 +53,13 @@ def create_frontend_router(build_dir="../frontend/dist"):
     return react
 
 
+# 添加健康检查端点
+@app.get("/health")
+async def health_check():
+    """健康检查端点，用于Docker和Kubernetes监控应用状态"""
+    return {"status": "ok", "message": "Service is running"}
+
+
 # Mount the frontend under /app to not conflict with the LangGraph API routes
 app.mount(
     "/app",

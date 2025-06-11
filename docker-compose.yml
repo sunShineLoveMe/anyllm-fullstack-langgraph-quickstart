@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  anyllm-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8123:8123"  # 后端API端口
+      - "5173:5173"  # 前端服务端口
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

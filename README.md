@@ -60,14 +60,16 @@
 - Python 3.11+
 - Node.js
 
-### 步骤 1：克隆仓库
+### 本地开发环境
+
+#### 步骤 1：克隆仓库
 
 ```bash
 git clone https://github.com/yourusername/anyllm-fullstack-langgraph-quickstart.git
 cd anyllm-fullstack-langgraph-quickstart
 ```
 
-### 步骤 2：后端配置
+#### 步骤 2：后端配置
 
 1. 配置环境变量
    ```bash
@@ -87,7 +89,7 @@ cd anyllm-fullstack-langgraph-quickstart
    pip install .
    ```
 
-### 步骤 3：前端配置
+#### 步骤 3：前端配置
 
 1. 安装前端依赖
    ```bash
@@ -100,7 +102,7 @@ cd anyllm-fullstack-langgraph-quickstart
    npm run build
    ```
 
-### 步骤 4：启动应用
+#### 步骤 4：启动应用
 
 1. 返回项目根目录并启动应用
    ```bash
@@ -109,6 +111,29 @@ cd anyllm-fullstack-langgraph-quickstart
    ```
 
 2. 在浏览器中访问：`http://localhost:5173/app/`
+
+### Docker部署
+
+本项目支持Docker部署，方便在生产环境或云服务上运行。
+
+#### 快速部署
+
+1. 配置环境变量
+   ```bash
+   cp .env.docker .env
+   # 编辑.env文件设置API配置
+   ```
+
+2. 构建和启动Docker容器
+   ```bash
+   docker-compose up -d --build
+   ```
+
+3. 访问应用：`http://localhost:5173/app/`
+
+更多关于Docker和阿里云部署的详细信息，请参考以下文档：
+- [Docker快速部署指南](docker-quickstart.md)
+- [阿里云详细部署指南](deploy-guide.md)
 
 ## 🔧 配置说明
 
@@ -146,18 +171,20 @@ LangSmith可用于跟踪和监控LangGraph的执行：
 ```
 .
 ├── backend/            # Python后端
-│   ├── anyagent/       # 主要代码
+│   ├── src/            # 源代码
 │   ├── .env.example    # 环境变量示例
 │   └── pyproject.toml  # 项目依赖
 ├── frontend/           # React前端
 │   ├── src/            # 源代码
 │   └── package.json    # 前端依赖
+├── Dockerfile          # Docker构建文件
+├── docker-compose.yml  # Docker Compose配置
 └── Makefile            # 开发命令
 ```
 
 ### 本地开发
 
-- 后端修改：编辑`backend/anyagent/`下的文件
+- 后端修改：编辑`backend/src/agent/`下的文件
 - 前端修改：编辑`frontend/src/`下的文件
 - 启动开发服务器：使用`make dev`命令
 
