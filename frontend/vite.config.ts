@@ -16,11 +16,23 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
+    hmr: {
+      protocol: 'ws',
+      host: '47.113.196.109', // <--- 阿里云公网IP
+    },
     proxy: {
       "/api": {
-        target: process.env.VITE_API_URL || "http://localhost:8123",
+        target: "http://127.0.0.1:2024",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      "/graphs": { // LangGraph 原生路径代理 (如果需要)
+        target: "http://127.0.0.1:2024",
+        changeOrigin: true,
+      },
+      "/openapi.json": { // LangGraph 原生路径代理 (如果需要)
+        target: "http://127.0.0.1:2024",
+        changeOrigin: true,
       },
     },
   },
