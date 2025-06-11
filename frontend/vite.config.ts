@@ -11,7 +11,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-  base: "/app/",
+  base: "/cloudthink/",
   server: {
     host: '0.0.0.0',
     port: 5173,
