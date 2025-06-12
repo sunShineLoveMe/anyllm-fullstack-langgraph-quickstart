@@ -34,18 +34,18 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         />
       </div>
     </div>
-    <p className="text-xs text-neutral-500">
+    <p className="hidden sm:block text-xs text-neutral-500">
       Powered by DeepSeek and LangChain LangGraph.
     </p>
     
-    <div className="absolute bottom-4 right-4 text-xs text-neutral-500 text-right">
+    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-xs text-neutral-500 text-center w-full flex flex-col items-center justify-center">
       <a 
         href="http://zhiyunllm.tech/" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="hover:text-neutral-400 transition-colors"
       >
-        栉云科技提供技术支持<br />
+        <span>栉云科技提供技术支持</span><br />
         <span className="text-[10px]">Technical Support by ZhiYun Tech</span>
       </a>
     </div>

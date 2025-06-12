@@ -14,3 +14,14 @@ echo "Backend started with PID $!"
 
 echo "All services started in background."
 
+
+# 查看日志
+# tail -f frontend.log    tail -f backend.log
+
+# 停止服务
+# ps -ef | grep npm
+# ps -ef | grep langgraph
+
+# 然后用kill <PID> 停止
+
+

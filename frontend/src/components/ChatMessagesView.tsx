@@ -322,14 +322,14 @@ export function ChatMessagesView({
           </div>
         </div>
         <div className="text-xs text-neutral-500 flex flex-wrap justify-between px-2 pb-2 gap-2">
-          <p className="text-[10px] sm:text-xs">Powered by DeepSeek and LangChain LangGraph.</p>
+          <p className="hidden sm:block text-[10px] sm:text-xs">Powered by DeepSeek and LangChain LangGraph.</p>
           <a 
             href="http://zhiyunllm.tech/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:text-neutral-400 transition-colors text-right text-[10px] sm:text-xs"
+            className="w-full flex flex-col items-center justify-center text-center hover:text-neutral-400 transition-colors text-[10px] sm:text-xs"
           >
-            栉云科技提供技术支持<br />
+            <span>栉云科技提供技术支持</span>
             <span className="text-[8px] sm:text-[10px]">Technical Support by ZhiYun Tech</span>
           </a>
         </div>
