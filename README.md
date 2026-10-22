@@ -65,7 +65,7 @@
 #### 步骤 1：克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/anyllm-fullstack-langgraph-quickstart.git
+git clone https://github.com/sunShineLoveMe/anyllm-fullstack-langgraph-quickstart.git
 cd anyllm-fullstack-langgraph-quickstart
 ```
 
@@ -78,8 +78,8 @@ cd anyllm-fullstack-langgraph-quickstart
    ```
 
 2. 在`.env`文件中设置以下参数：
-   - `OPENAI_API_BASE_URL`：DeepSeek API的URL
-   - `OPENAI_API_KEY`：API密钥（本地服务可随意设置）
+   - `OPENAI_API_BASE`：模型服务的 OpenAI 兼容 API URL
+   - `OPENAI_API_KEY`：必须通过环境变量或 `backend/.env` 配置；本地无鉴权服务可使用占位值，不要把真实密钥提交到 Git。
    - `GOOGLE_API_KEY`（可选）：Google搜索API密钥
    - `GOOGLE_CSE_ID`（可选）：Google自定义搜索引擎ID
    - `LANGSMITH_API_KEY`（可选）：LangSmith API密钥
