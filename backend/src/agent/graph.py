@@ -32,7 +32,11 @@ from agent.utils import get_research_topic
 load_dotenv()
 
 OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "https://api.deepseek.com")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-005739fc3fb74df6841ee8c9181b3689")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+if not OPENAI_API_KEY:
+    raise ValueError(
+        "Set OPENAI_API_KEY in your environment or backend/.env before starting the agent."
+    )
 
 OPENAI_CLIENT = openai.OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
 
