@@ -1,201 +1,139 @@
-# AnyLLM Fullstack LangGraph Quickstart
+# AnyLLM · LangGraph 搜索研究助手
+**Query → Search → Reflect → Answer**
 
-<div align="center">
-  <p>
-    <strong>基于LangGraph的本地大模型智能搜索助手</strong><br>
-    <small>由<a href="http://zhiyunllm.tech/" target="_blank">上海栉云科技有限公司</a>提供技术支持</small>
-  </p>
-</div>
+把一个问题拆成搜索查询，收集片段，再通过反思节点决定是否继续检索，最后生成回答。前端展示查询、检索、反思和回答的过程，而不只是一个聊天输入框。
 
-## 📖 项目简介
+本项目基于 [Google Gemini Fullstack LangGraph Quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) 改造，将核心调用切换为 OpenAI 兼容接口，当前默认使用 deepseek-chat。适合学习 LangGraph 编排和研究型 Agent 的前后端连接。
 
-本项目基于[google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart)开发，是一个完整的智能搜索助手，使用LangGraph构建高级推理流程，可以执行网络搜索和智能回答用户查询。
+[快速开始](#快速开始) · [搜索模式](#搜索模式) · [架构](#架构) · [当前边界](#当前边界)
 
-### 核心功能
+## 能做什么
 
-- 🔍 **智能搜索**：使用Google Search API或模拟搜索结果进行网络信息检索
-- 🧠 **本地模型支持**：集成DeepSeek Chat模型，使用OpenAI兼容接口
-- 📈 **可调节搜索深度**：根据用户需求支持低、中、高三种搜索努力程度
-- 💻 **完整前后端**：包含React前端和Python后端
+- 根据问题生成多个搜索查询，并行进入检索节点。
+- 通过反思节点识别信息缺口，按努力程度控制检索轮次。
+- 在 React 页面中流式显示执行进度、来源和最终回答。
+- 使用真实 Google 搜索，或通过模拟结果演示工作流。
 
-### 主要改进
+**默认启用模拟搜索。** 模拟结果用于验证界面和编排，不是已经查证的事实来源；模型调用仍然需要可用的 LLM 服务。
 
-1. **模型替换**：使用DeepSeek Chat模型，并将Gemini的API接口转换为OpenAI格式接口
-2. **搜索实现**：使用Google Search API进行搜索，并提供无API时的模拟搜索功能
-3. **开发便利性**：移除Docker相关配置，便于本地开发调试
-4. **前端优化**：更新UI以反映DeepSeek模型
+## 快速开始
 
-## 🌟 应用场景
+准备 **Python 3.11+、Node.js 22 和 npm**。建议使用独立 Python 环境；当前依赖没有完整锁定。
 
-本项目适用于多种场景，为用户提供智能化的信息获取和问答体验：
+### 1. 获取代码并安装后端
 
-### 教育与研究
-
-- **学术研究辅助**：快速检索和汇总相关学术资料
-- **学习辅导**：回答学生问题，提供详细解释和相关资源
-- **知识探索**：深入了解特定领域知识，获取最新研究进展
-
-### 商业应用
-
-- **市场分析**：搜集和分析产品、竞争对手、市场趋势信息
-- **客户支持**：为用户提供智能化的产品问答和技术支持
-- **内容创作**：辅助内容创作者进行信息收集和内容整理
-
-### 个人助理
-
-- **日常问答**：回答用户日常生活中的各类问题
-- **信息聚合**：汇总多渠道信息，提供全面视角
-- **决策辅助**：为用户决策提供相关信息和建议
-
-### 企业内部应用
-
-- **知识库查询**：与企业内部知识库集成，提供精准问答
-- **数据分析**：基于公开数据进行简单分析和解读
-- **培训工具**：作为员工培训和学习的辅助工具
-
-## 🚀 安装与使用
-
-### 系统要求
-
-- Python 3.11+
-- Node.js
-
-### 本地开发环境
-
-#### 步骤 1：克隆仓库
-
-```bash
+~~~bash
 git clone https://github.com/sunShineLoveMe/anyllm-fullstack-langgraph-quickstart.git
 cd anyllm-fullstack-langgraph-quickstart
-```
 
-#### 步骤 2：后端配置
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e "./backend[dev]" "langgraph-cli[inmem]"
+cp backend/.env.example backend/.env
+~~~
 
-1. 配置环境变量
-   ```bash
-   cd backend
-   cp .env.example .env
-   ```
+编辑 backend/.env：
 
-2. 在`.env`文件中设置以下参数：
-   - `OPENAI_API_BASE`：模型服务的 OpenAI 兼容 API URL
-   - `OPENAI_API_KEY`：必须通过环境变量或 `backend/.env` 配置；本地无鉴权服务可使用占位值，不要把真实密钥提交到 Git。
-   - `GOOGLE_API_KEY`（可选）：Google搜索API密钥
-   - `GOOGLE_CSE_ID`（可选）：Google自定义搜索引擎ID
-   - `LANGSMITH_API_KEY`（可选）：LangSmith API密钥
+~~~dotenv
+OPENAI_API_BASE=https://api.deepseek.com
+OPENAI_API_KEY=replace_with_your_model_api_key
+USE_MOCK_SEARCH=true
+~~~
 
-3. 安装后端依赖
-   ```bash
-   pip install .
-   ```
+变量名是 **OPENAI_API_BASE**，不是 OPENAI_API_BASE_URL。API Key 必须显式配置；本地无鉴权服务也需要填一个非空占位值。
 
-#### 步骤 3：前端配置
+当前核心节点仍使用 deepseek-chat 标识。接入其他兼容服务时，它必须提供该标识，或先统一修改代码中的模型配置；只替换 URL 不能自动支持任意模型。
 
-1. 安装前端依赖
-   ```bash
-   cd ../frontend
-   npm install
-   ```
+### 2. 启动 LangGraph 后端
 
-2. 构建前端（可选）
-   ```bash
-   npm run build
-   ```
+在已激活虚拟环境的终端中：
 
-#### 步骤 4：启动应用
+~~~bash
+cd backend
+langgraph dev
+~~~
 
-1. 返回项目根目录并启动应用
-   ```bash
-   cd ..
-   make dev
-   ```
+默认开发 API 为 **http://localhost:2024**。图名称是 agent，入口由 [backend/langgraph.json](backend/langgraph.json) 配置。
 
-2. 在浏览器中访问：`http://localhost:5173/app/`
+### 3. 启动前端
 
-### Docker部署
+另开终端，从项目根目录执行：
 
-本项目支持Docker部署，方便在生产环境或云服务上运行。
+~~~bash
+cd frontend
+npm ci
+npm run dev
+~~~
 
-#### 快速部署
+打开 **http://localhost:5173/app/**。开发模式下，前端 SDK 直接连接 localhost:2024；首次体验请在运行后端的同一台电脑打开浏览器。
 
-1. 配置环境变量
-   ```bash
-   cp .env.docker .env
-   # 编辑.env文件设置API配置
-   ```
+### 4. 验证第一轮流程
 
-2. 构建和启动Docker容器
-   ```bash
-   docker-compose up -d --build
-   ```
+输入一个范围清晰的问题，先选择 Low，观察：
 
-3. 访问应用：`http://localhost:5173/app/`
+~~~text
+生成查询 → 检索结果 → 信息缺口反思 → 最终回答
+~~~
 
-更多关于Docker和阿里云部署的详细信息，请参考以下文档：
-- [Docker快速部署指南](docker-quickstart.md)
-- [阿里云详细部署指南](deploy-guide.md)
+默认模拟搜索不要求 Google 凭据，但仍会调用 LLM。看到回答后，再按下一节接入真实搜索，并人工核对来源。
 
-## 🔧 配置说明
+## 搜索模式
 
-### Google Search API（可选）
+| 变量 | 作用 |
+| --- | --- |
+| USE_MOCK_SEARCH=true | 默认模式，返回代码内置的演示搜索结果 |
+| USE_MOCK_SEARCH=false | 尝试调用 Google Custom Search |
+| GOOGLE_SEARCH_API_KEY | Google 搜索服务凭据 |
+| GOOGLE_SEARCH_CX | 自定义搜索引擎 ID |
 
-如果需要真实的搜索功能，您需要配置Google Search API：
+切换真实模式后重启后端。缺少搜索凭据或搜索调用异常时，当前代码会回退到模拟结果；不能把“流程成功”当成“已完成真实网络检索”。
 
-1. 获取API密钥：[Google API Key](https://developers.google.com/custom-search/v1/introduction?hl=zh-cn#identify_your_application_to_google_with_api_key)
-2. 获取CSE ID：[Custom Search Engine ID](https://stackoverflow.com/questions/6562125/getting-a-cx-id-for-custom-search-google-api-python)
+前端三档努力程度：
 
-### LangSmith（可选）
+| 档位 | 初始查询数 | 最大研究循环数 |
+| --- | ---: | ---: |
+| Low | 1 | 1 |
+| Medium | 3 | 3 |
+| High | 5 | 10 |
 
-LangSmith可用于跟踪和监控LangGraph的执行：
+更多循环会增加模型请求量，效果取决于问题、模型与真实搜索质量。
 
-1. 访问[LangSmith官网](https://smith.langchain.com/)获取API密钥
-2. 在`.env`文件中设置`LANGSMITH_API_KEY`
+## 架构
 
-## 📊 使用说明
+~~~mermaid
+flowchart LR
+    A["React / 流式时间线"] <--> B["LangGraph 开发 API"]
+    B --> C["生成查询"]
+    C --> D["真实或模拟搜索"]
+    D --> E["反思信息缺口"]
+    E -->|"继续"| D
+    E -->|"足够"| F["生成回答"]
+    C & E & F <--> G["OpenAI 兼容模型服务"]
+~~~
 
-1. 在首页输入您的查询问题
-2. 选择搜索努力程度（低/中/高）
-   - 低：最多1次搜索查询，1个搜索循环
-   - 中：最多3次搜索查询，3个搜索循环
-   - 高：最多5次搜索查询，10个搜索循环
-3. 系统会执行以下步骤：
-   - 生成搜索查询
-   - 执行网络搜索（或使用模拟数据）
-   - 反思是否需要更多信息
-   - 生成最终答案
+| 路径 | 内容 |
+| --- | --- |
+| frontend/src/App.tsx | 流式连接、查询提交与事件时间线 |
+| backend/src/agent/graph.py | 查询、搜索、反思和回答节点 |
+| backend/src/agent/configuration.py | 运行配置与默认模型 |
+| backend/src/agent/state.py | 图状态与消息累积 |
+| backend/langgraph.json | agent 图与自定义 HTTP 应用 |
 
-## 📝 开发说明
+## 开发验证与当前边界
 
-### 项目结构
+~~~bash
+cd frontend
+npm run build
+npm run lint
+~~~
 
-```
-.
-├── backend/            # Python后端
-│   ├── src/            # 源代码
-│   ├── .env.example    # 环境变量示例
-│   └── pyproject.toml  # 项目依赖
-├── frontend/           # React前端
-│   ├── src/            # 源代码
-│   └── package.json    # 前端依赖
-├── Dockerfile          # Docker构建文件
-├── docker-compose.yml  # Docker Compose配置
-└── Makefile            # 开发命令
-```
+- 默认依赖组合与模型响应格式需要在目标环境验证；仓库没有可据以声明整条研究链路通过的完整自动化测试套件。
+- 前端模型选择与后端模型配置尚未统一。通过 API 直接调用时，应像前端一样提供 reasoning_model；反思节点的配置兜底仍需整理。
+- 生产构建中的 API 地址仍固定为 localhost:8123，需要部署前调整；它与开发模式的 2024 端口不同。
+- 现有 Dockerfile 引用了仓库未包含的 backend/setup.py，启动脚本也引用了未提供的 anyagent.server。因此 **当前推荐上面的双终端开发路径，不把旧 Docker 文档当作可直接运行的部署方案**。
 
-### 本地开发
+历史 [Docker 说明](docker-quickstart.md)与[部署说明](deploy-guide.md)保留为参考；若与这里列出的代码现状冲突，以源码和当前启动路径为准。
 
-- 后端修改：编辑`backend/src/agent/`下的文件
-- 前端修改：编辑`frontend/src/`下的文件
-- 启动开发服务器：使用`make dev`命令
+## 来源与许可
 
-## 👥 技术支持
-
-本项目由[上海栉云科技有限公司](http://zhiyunllm.tech/)提供技术支持。如有技术问题或合作需求，请访问官方网站获取更多信息。
-
-上海栉云科技专注于人工智能应用开发，提供包括智能客服、数据分析、智能助手和定制开发等多种解决方案，助力企业数字化转型。
-
-## 📄 许可证
-
-本项目采用MIT许可证。详情请查看LICENSE文件。
-
-
+基于 Google Gemini 的开源全栈示例改造，保留上游归属。仓库根目录包含 [Apache-2.0 LICENSE](LICENSE)，backend 目录另有 [MIT LICENSE](backend/LICENSE)；复用时按相关文件和组件的许可要求处理。
